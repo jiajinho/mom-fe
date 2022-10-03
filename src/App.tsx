@@ -1,10 +1,14 @@
 import React from 'react';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 function App() {
   return (
-    <div className="App">
-      123
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <main>
+        123
+      </main>
+    </LocalizationProvider>
   );
 }
 
