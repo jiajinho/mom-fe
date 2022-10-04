@@ -4,6 +4,8 @@
   --primary-color: #61AFFE;
   --secondary-color: #113355;
   --neutral-color: #F5F5F5;
+
+  --font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -21,4 +23,8 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+p, input {
+  font-size: 16px;
 }
