@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import { Forecast } from 'api/weather/type';
+import { Forecast } from 'api/weather/types';
 import Card from './Card';
 
 const Wrapper = styled.div`

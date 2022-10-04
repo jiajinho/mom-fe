@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import type { Forecast } from 'api/weather/type';
+import type { Forecast } from 'api/weather/types';
 import { mapWeatherToSVGPath } from './utils';
 
 const Wrapper = styled.div`

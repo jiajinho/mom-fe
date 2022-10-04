@@ -1,4 +1,4 @@
-import { Weather } from "api/weather/type";
+import { Weather } from "api/weather/types";
 
 export function mapWeatherToSVGPath(weather: Weather) {
   const baseUrl = "static/weather/";

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
 import config from 'config';
-import type { Response } from './type';
+import type { Response } from './types';
 import axios from '../instance';
 
 async function getLatest2Hour(date_time?: Date) {
