@@ -35,6 +35,10 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
   }
+
+  & .react-datepicker__time-box, & .react-datepicker__time-list {
+    height: 100% !important;
+  }
 `;
 
 const Picker = styled(DatePicker)`

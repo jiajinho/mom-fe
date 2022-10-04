@@ -8,6 +8,8 @@ import type { Response as TrafficResponse } from 'api/traffic/types';
 import DatePicker from 'components/common/DatePicker';
 import Weather from 'components/Weather';
 import Traffic from 'components/Traffic';
+import { AreaCondition } from 'types';
+import { getNearestArea } from 'utils';
 
 const Wrapper = styled.main`
   min-height: 100vh;
@@ -22,9 +24,30 @@ function App() {
   const [forecast, setForecast] = useState<ForecastResponse>();
   const [traffic, setTraffic] = useState<TrafficResponse>();
 
+  const [conditions, setConditions] = useState<AreaCondition[]>();
+
   useEffect(() => {
-    api.weather.getLatest2Hour(date).then(setForecast);
-    api.traffic.getTrafficImages().then(setTraffic);
+    (async () => {
+      const promises: [Promise<ForecastResponse>, Promise<TrafficResponse>] = [
+        api.weather.getLatest2Hour(date),
+        api.traffic.getTrafficImages(date)
+      ];
+
+      await Promise.all(promises);
+
+      const forecastResponse = await promises[0];
+      const trafficResponse = await promises[1];
+
+      console.log(trafficResponse);
+      getNearestArea(trafficResponse.items[0].cameras[0].location, forecastResponse.area_metadata);
+
+    })();
+
+    // api.weather.getLatest2Hour(date).then(setForecast);
+    // api.traffic.getTrafficImages().then(setTraffic);
+
+
+
 
     // (async () => {
     //   const forecast = await api.weather.getLatest2Hour(date);
@@ -43,9 +66,9 @@ function App() {
         onChange={setDate}
       />
 
-      {/* <Weather value={forecast?.items[0]?.forecasts} /> */}
+      <Weather value={forecast?.items[0]?.forecasts} />
 
-      <Traffic />
+      <Traffic value={traffic?.items[0]?.cameras} />
     </Wrapper>
   );
 }
