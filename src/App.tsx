@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 
 import api from 'api';
-import { Response as ForecastResponse } from 'api/weather/type';
+import type { Response as ForecastResponse } from 'api/weather/types';
+import type { Response as TrafficResponse } from 'api/traffic/types';
+
 import DatePicker from 'components/common/DatePicker';
 import Weather from 'components/Weather';
+import Traffic from 'components/Traffic';
 
 const Wrapper = styled.main`
   min-height: 100vh;
@@ -15,15 +18,20 @@ const Wrapper = styled.main`
 `;
 
 function App() {
-  const [value, setValue] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(new Date());
   const [forecast, setForecast] = useState<ForecastResponse>();
+  const [traffic, setTraffic] = useState<TrafficResponse>();
 
   useEffect(() => {
-    (async () => {
-      const response = await api.weather.getLatest2Hour(value);
-      setForecast(response);
-    })();
-  }, [value]);
+    api.weather.getLatest2Hour(date).then(setForecast);
+    api.traffic.getTrafficImages().then(setTraffic);
+
+    // (async () => {
+    //   const forecast = await api.weather.getLatest2Hour(date);
+    //   setForecast(forecast);
+
+    // })();
+  }, [date]);
 
   // console.log(forecast);
 
@@ -31,11 +39,13 @@ function App() {
   return (
     <Wrapper>
       <DatePicker
-        selected={value}
-        onChange={setValue}
+        selected={date}
+        onChange={setDate}
       />
 
-      <Weather value={forecast?.items[0]?.forecasts} />
+      {/* <Weather value={forecast?.items[0]?.forecasts} /> */}
+
+      <Traffic />
     </Wrapper>
   );
 }

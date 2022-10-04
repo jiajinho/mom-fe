@@ -37,9 +37,7 @@ export type Item = {
 }
 
 export type Response = {
-  api_info: {
-    status: "healthy" | unknown
-  },
+  api_info: { status: "healthy" | unknown },
   area_metadata: AreaMetadata[],
   items: Item[]
 }

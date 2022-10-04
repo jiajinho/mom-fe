@@ -4,12 +4,12 @@ import config from 'config';
 import type { Response } from './types';
 import axios from '../instance';
 
-async function getLatest2Hour(date_time?: Date) {
+async function getTrafficImages(date_time?: Date) {
   const serverTime = date_time ?
     format(date_time, config.format.datetime.server) :
     undefined;
 
-  const response = await axios.get<Response>('environment/2-hour-weather-forecast', {
+  const response = await axios.get<Response>('transport/traffic-images', {
     params: {
       date_time: serverTime
     }
@@ -19,5 +19,5 @@ async function getLatest2Hour(date_time?: Date) {
 }
 
 export default {
-  getLatest2Hour
+  getTrafficImages
 }
