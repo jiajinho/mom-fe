@@ -30,6 +30,11 @@ const Wrapper = styled.div`
     flex-grow: 1;
     overflow: hidden;
   }
+
+  & .react-datepicker__time-list-item {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const Picker = styled(DatePicker)`
