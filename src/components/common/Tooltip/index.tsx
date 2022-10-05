@@ -8,13 +8,14 @@ const Wrapper = styled.div`
 
 export const Tooltip = styled.div`
   position: absolute;
+  z-index: 0;
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
 
   opacity: 0;
   
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   padding: 5px 7px;
   border-radius: 4px;
   background: black;
@@ -29,7 +30,7 @@ export const Tooltip = styled.div`
     left: 50%;
     transform: translate(-50%);
     border-style: solid;
-    border-width: 5px 3px;
+    border-width: 4px 3px;
     border-color: transparent;
     border-top-color: black;
   }

@@ -18,9 +18,6 @@ const Wrapper = styled.div`
   border-radius: 8px;
 
   box-shadow: 1px 1px 6px 1px #0001;
-
-  ${$Globe} { height: 16px }
-  ${$Tooltip} { white-space: nowrap }
 `;
 
 const Icon = styled.img`
@@ -53,6 +50,7 @@ const Area = styled.div`
     font-weight: 500 
   }
 
+  ${$Tooltip} { white-space: nowrap }
   ${$Globe} { height: 15px }
 
   ${$Image} { 
@@ -60,9 +58,8 @@ const Area = styled.div`
     cursor: pointer; 
   }
 
-  ${$Image}:hover path {
-    fill: var(--secondary-color);
-  }
+  ${$Image}:hover path { fill: var(--secondary-color) }
+
 `;
 
 export default ({ onImageIconClick, ...props }: {
