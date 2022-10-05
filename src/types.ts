@@ -5,12 +5,14 @@ export type Location = {
   longitude: number
 }
 
-export type AreaCondition = {
-  area: string,
-  weather: Weather,
+export type Camera = {
+  id: string,
+  url: string,
   location: Location,
-  camera: {
-    url: string,
-    location: Location
+  aspectRatio: number,
+  lastUpdated: string,
+  area: {
+    name: string,
+    weather: Weather,
   }
 }

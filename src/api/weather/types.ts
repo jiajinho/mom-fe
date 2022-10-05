@@ -14,7 +14,8 @@ export type Weather =
   "Passing Showers" |
   "Partly Cloudy (Night)" |
   "Fair (Night)" |
-  "Windy";
+  "Windy" |
+  "N/A";
 
 export type Forecast = {
   area: string,

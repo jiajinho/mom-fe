@@ -8,8 +8,9 @@ import type { Response as TrafficResponse } from 'api/traffic/types';
 import DatePicker from 'components/common/DatePicker';
 import Weather from 'components/Weather';
 import Traffic from 'components/Traffic';
-import { AreaCondition } from 'types';
+import { Camera } from 'types';
 import { getNearestArea } from 'utils';
+import CameraGroup from 'components/CameraGroup';
 
 const Wrapper = styled.main`
   min-height: 100vh;
@@ -24,7 +25,7 @@ function App() {
   const [forecast, setForecast] = useState<ForecastResponse>();
   const [traffic, setTraffic] = useState<TrafficResponse>();
 
-  const [conditions, setConditions] = useState<AreaCondition[]>();
+  const [cameras, setCameras] = useState<Camera[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -38,26 +39,31 @@ function App() {
       const forecastResponse = await promises[0];
       const trafficResponse = await promises[1];
 
-      console.log(trafficResponse);
-      getNearestArea(trafficResponse.items[0].cameras[0].location, forecastResponse.area_metadata);
+      //Aggregate traffic and forecast information
+      const cameras: Camera[] = [];
 
+      trafficResponse.items[0]?.cameras.forEach(c => {
+        const area = getNearestArea(c.location, forecastResponse.area_metadata);
+
+        const areaName = area?.name || "N/A";
+        const forecastArea = forecastResponse.items[0].forecasts.find(f => f.area === areaName);
+
+        cameras.push({
+          id: c.camera_id,
+          url: c.image,
+          location: c.location,
+          aspectRatio: c.image_metadata.width / c.image_metadata.height,
+          lastUpdated: c.timestamp,
+          area: {
+            name: areaName,
+            weather: forecastArea?.forecast || "N/A",
+          }
+        });
+      });
+
+      setCameras(cameras);
     })();
-
-    // api.weather.getLatest2Hour(date).then(setForecast);
-    // api.traffic.getTrafficImages().then(setTraffic);
-
-
-
-
-    // (async () => {
-    //   const forecast = await api.weather.getLatest2Hour(date);
-    //   setForecast(forecast);
-
-    // })();
   }, [date]);
-
-  // console.log(forecast);
-
 
   return (
     <Wrapper>
@@ -66,9 +72,11 @@ function App() {
         onChange={setDate}
       />
 
-      <Weather value={forecast?.items[0]?.forecasts} />
+      {/* <Weather value={forecast?.items[0]?.forecasts} />
 
-      <Traffic value={traffic?.items[0]?.cameras} />
+      <Traffic value={traffic?.items[0]?.cameras} /> */}
+
+      <CameraGroup value={cameras} />
     </Wrapper>
   );
 }
