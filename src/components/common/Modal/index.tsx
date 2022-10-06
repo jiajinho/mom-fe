@@ -4,7 +4,7 @@ import useAnimation from './useAnimation';
 
 export const Mask = styled.div`
   position: fixed;
-  z-index: 100;
+  z-index: 9999;
   height: 100vh;
   width: 100%;
   top: 0;

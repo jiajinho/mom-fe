@@ -4,13 +4,15 @@ import styled from 'styled-components/macro';
 import api from 'api';
 import type { Response as ForecastResponse } from 'api/weather/types';
 import type { Response as TrafficResponse } from 'api/traffic/types';
+import type { Camera } from 'types';
+import { getNearestArea } from 'utils';
 
 import DatePicker from 'components/common/DatePicker';
 import Weather from 'components/Weather';
 import Traffic from 'components/Traffic';
-import { Camera } from 'types';
-import { getNearestArea } from 'utils';
 import CameraGroup from 'components/CameraGroup';
+import Leaflet from 'components/Leaflet';
+import PreviewModal from 'components/PreviewModal';
 
 const Wrapper = styled.main`
   min-height: 100vh;
@@ -20,12 +22,20 @@ const Wrapper = styled.main`
   background: var(--neutral-color);
 `;
 
+const Container = styled.div`
+  display: flex;
+  
+`;
+
 function App() {
   const [date, setDate] = useState<Date>(new Date());
   const [forecast, setForecast] = useState<ForecastResponse>();
   const [traffic, setTraffic] = useState<TrafficResponse>();
 
   const [cameras, setCameras] = useState<Camera[]>([]);
+
+  const [visible, setVisible] = useState(false);
+  const [camera, setCamera] = useState<Camera>();
 
   useEffect(() => {
     (async () => {
@@ -65,19 +75,42 @@ function App() {
     })();
   }, [date]);
 
-  return (
-    <Wrapper>
-      <DatePicker
-        selected={date}
-        onChange={setDate}
-      />
+  const handlePreview = (c: Camera) => {
+    setCamera(c);
+    setVisible(true);
+  }
 
-      {/* <Weather value={forecast?.items[0]?.forecasts} />
+  return (
+    <>
+      <Wrapper>
+        <DatePicker
+          selected={date}
+          onChange={setDate}
+        />
+
+        {/* <Weather value={forecast?.items[0]?.forecasts} />
 
       <Traffic value={traffic?.items[0]?.cameras} /> */}
+        <Container>
 
-      <CameraGroup value={cameras} />
-    </Wrapper>
+          <CameraGroup
+            value={cameras}
+            onPreview={handlePreview}
+          />
+
+          <Leaflet
+            value={cameras}
+            onMarkerClick={handlePreview}
+          />
+        </Container>
+
+      </Wrapper>
+
+      <PreviewModal
+        visible={[visible, setVisible]}
+        camera={camera}
+      />
+    </>
   );
 }
 
