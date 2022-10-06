@@ -10,7 +10,8 @@ const Wrapper = styled.div`
 
 const CardGroup = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 `;
 

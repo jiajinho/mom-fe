@@ -52,6 +52,8 @@ function App() {
       const forecastResponse = await promises[0];
       const trafficResponse = await promises[1];
 
+      setForecast(forecastResponse);
+
       //Aggregate traffic and forecast information
       const cameras: Camera[] = [];
 
@@ -95,8 +97,8 @@ function App() {
           onChange={setDate}
         />
 
-        {/* <Weather value={forecast?.items[0]?.forecasts} />
-      <Traffic value={traffic?.items[0]?.cameras} /> */}
+        <Weather value={forecast?.items[0]?.forecasts} />
+        {/* <Traffic value={traffic?.items[0]?.cameras} /> */}
 
         <Container>
           <CameraGroup
