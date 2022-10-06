@@ -1,17 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 
-import api from 'api';
 import type { LatLngExpression } from 'leaflet';
-import type { Response as ForecastResponse } from 'api/weather/types';
-import type { Response as TrafficResponse } from 'api/traffic/types';
 import type { Camera } from 'types';
-import { getNearestArea } from 'utils';
+import useFetchApi from 'hooks/useFetchApi';
 
 import DatePicker from 'components/common/DatePicker';
 import Weather from 'components/Weather';
-import Traffic from 'components/Traffic';
-import CameraGroup from 'components/CameraGroup';
+import Cameras from 'components/Cameras';
 import Leaflet from 'components/Leaflet';
 import PreviewModal from 'components/PreviewModal';
 
@@ -29,56 +25,13 @@ const Container = styled.div`
 `;
 
 function App() {
-  const [date, setDate] = useState<Date>(new Date());
-  const [forecast, setForecast] = useState<ForecastResponse>();
-  const [traffic, setTraffic] = useState<TrafficResponse>();
+  const map = useRef<L.Map>(null);
 
-  const [cameras, setCameras] = useState<Camera[]>([]);
+  const [date, setDate] = useState<Date>(new Date());
+  const { forecast, cameras } = useFetchApi(date);
 
   const [visible, setVisible] = useState(false);
   const [camera, setCamera] = useState<Camera>();
-
-  const map = useRef<L.Map>(null);
-
-  useEffect(() => {
-    (async () => {
-      const promises: [Promise<ForecastResponse>, Promise<TrafficResponse>] = [
-        api.weather.getLatest2Hour(date),
-        api.traffic.getTrafficImages(date)
-      ];
-
-      await Promise.all(promises);
-
-      const forecastResponse = await promises[0];
-      const trafficResponse = await promises[1];
-
-      setForecast(forecastResponse);
-
-      //Aggregate traffic and forecast information
-      const cameras: Camera[] = [];
-
-      trafficResponse.items[0]?.cameras.forEach(c => {
-        const area = getNearestArea(c.location, forecastResponse.area_metadata);
-
-        const areaName = area?.name || "N/A";
-        const forecastArea = forecastResponse.items[0].forecasts.find(f => f.area === areaName);
-
-        cameras.push({
-          id: c.camera_id,
-          url: c.image,
-          location: c.location,
-          aspectRatio: c.image_metadata.width / c.image_metadata.height,
-          lastUpdated: c.timestamp,
-          area: {
-            name: areaName,
-            weather: forecastArea?.forecast || "N/A",
-          }
-        });
-      });
-
-      setCameras(cameras);
-    })();
-  }, [date]);
 
   const handlePreview = (c: Camera) => {
     setCamera(c);
@@ -98,10 +51,9 @@ function App() {
         />
 
         <Weather value={forecast?.items[0]?.forecasts} />
-        {/* <Traffic value={traffic?.items[0]?.cameras} /> */}
 
         <Container>
-          <CameraGroup
+          <Cameras
             value={cameras}
             onPreview={handlePreview}
             setMapCenter={setMapCenter}
