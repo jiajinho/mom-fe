@@ -16,31 +16,29 @@ export const Wrapper = styled(MapContainer)`
   height: 600px;
   width: 100%;
 
-  & .leaflet-popup {
-    bottom: 36px !important;
-  }
+  & .leaflet-popup { bottom: 36px !important }
 `;
 
-export default ({ value, onMarkerClick }: {
+export default React.forwardRef(({ value, onMarkerClick }: {
   value: Camera[],
   onMarkerClick: (c: Camera) => void
-}) => {
-  return (
-    <Wrapper center={[1.3581487354888908, 103.8186384701943]} zoom={12}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+},
+  ref: React.ForwardedRef<L.Map>
+) => (
+  <Wrapper ref={ref} center={[1.3581487354888908, 103.8186384701943]} zoom={12}>
+    <TileLayer
+      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+    {value.map((v, i) =>
+      <Marker
+        key={i}
+        position={[v.location.latitude, v.location.longitude]}
+        icon={defaultIcon}
+        eventHandlers={{
+          click: () => onMarkerClick(v)
+        }}
       />
-      {value.map((v, i) =>
-        <Marker
-          key={i}
-          position={[v.location.latitude, v.location.longitude]}
-          icon={defaultIcon}
-          eventHandlers={{
-            click: () => onMarkerClick(v)
-          }}
-        />
-      )}
-    </Wrapper>
-  );
-}
+    )}
+  </Wrapper>
+));

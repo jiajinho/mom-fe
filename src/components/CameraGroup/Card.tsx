@@ -6,7 +6,7 @@ import { mapWeatherToSVGPath } from 'utils';
 
 import Tooltip, { Tooltip as $Tooltip } from 'components/common/Tooltip';
 import Globe, { Wrapper as $Globe } from 'components/common/svg/Globe';
-import Image, { Wrapper as $Image } from 'components/common/svg/Image';
+import CaretUp, { Wrapper as $CaretUp } from 'components/common/svg/CaretUp';
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,6 +18,16 @@ const Wrapper = styled.div`
   border-radius: 8px;
 
   box-shadow: 1px 1px 6px 1px #0001;
+
+  ${$CaretUp} { 
+    height: 20px;
+    cursor: pointer;
+  }
+
+  ${$Globe}:hover path,
+  ${$CaretUp}:hover path { 
+    fill: var(--secondary-color);
+  }
 `;
 
 const Icon = styled.img`
@@ -51,19 +61,16 @@ const Area = styled.div`
   }
 
   ${$Tooltip} { white-space: nowrap }
-  ${$Globe} { height: 15px }
 
-  ${$Image} { 
-    height: 14px;
+  ${$Globe} { 
+    height: 16px;
     cursor: pointer; 
   }
-
-  ${$Image}:hover path { fill: var(--secondary-color) }
-
 `;
 
-export default ({ onImageIconClick, ...props }: {
-  onImageIconClick: () => void
+export default ({ onImageIconClick, onGlobeClick, ...props }: {
+  onImageIconClick: () => void,
+  onGlobeClick: () => void
 } & Camera) => {
 
   const tooltip = `${props.location.latitude}, ${props.location.longitude}`;
@@ -77,11 +84,7 @@ export default ({ onImageIconClick, ...props }: {
           <p>{props.area.name}</p>
 
           <Tooltip text={tooltip}>
-            <Globe color="#bbb" />
-          </Tooltip>
-
-          <Tooltip text="Click to view image">
-            <Image color="#bbb" onClick={onImageIconClick} />
+            <Globe color="#bbb" onClick={onGlobeClick} />
           </Tooltip>
         </Area>
 
@@ -89,6 +92,15 @@ export default ({ onImageIconClick, ...props }: {
           {props.area.weather}
         </p>
       </Content>
+
+      <CaretUp
+        color="#bbb"
+        direction="right"
+        onClick={() => {
+          onImageIconClick();
+          onGlobeClick();
+        }}
+      />
     </Wrapper>
   );
 }

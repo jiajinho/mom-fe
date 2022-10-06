@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 
 export const Tooltip = styled.div`
   position: absolute;
-  z-index: 0;
+  z-index: 9997;
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 
 import api from 'api';
+import type { LatLngExpression } from 'leaflet';
 import type { Response as ForecastResponse } from 'api/weather/types';
 import type { Response as TrafficResponse } from 'api/traffic/types';
 import type { Camera } from 'types';
@@ -36,6 +37,8 @@ function App() {
 
   const [visible, setVisible] = useState(false);
   const [camera, setCamera] = useState<Camera>();
+
+  const map = useRef<L.Map>(null);
 
   useEffect(() => {
     (async () => {
@@ -80,6 +83,10 @@ function App() {
     setVisible(true);
   }
 
+  const setMapCenter = (latlng: LatLngExpression) => {
+    map.current?.setView(latlng, 15);
+  }
+
   return (
     <>
       <Wrapper>
@@ -89,16 +96,17 @@ function App() {
         />
 
         {/* <Weather value={forecast?.items[0]?.forecasts} />
-
       <Traffic value={traffic?.items[0]?.cameras} /> */}
-        <Container>
 
+        <Container>
           <CameraGroup
             value={cameras}
             onPreview={handlePreview}
+            setMapCenter={setMapCenter}
           />
 
           <Leaflet
+            ref={map}
             value={cameras}
             onMarkerClick={handlePreview}
           />

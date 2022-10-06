@@ -39,6 +39,10 @@ const Wrapper = styled.div`
   & .react-datepicker__time-box, & .react-datepicker__time-list {
     height: 100% !important;
   }
+
+  & .react-datepicker-popper {
+    z-index: 9998;
+  }
 `;
 
 const Picker = styled(DatePicker)`
