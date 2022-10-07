@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
 import { Forecast } from 'api/weather/types';
 import Card from './Card';
+import Pagination from './Pagination';
 
 const Wrapper = styled.div`
-  h2 { margin-bottom: 10px }
+  position: relative;
+  padding: 20px 25px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const CardGroup = styled.div`
@@ -15,14 +21,24 @@ const CardGroup = styled.div`
   gap: 10px;
 `;
 
-export default ({ value }: { value?: Forecast[] }) => (
-  <Wrapper>
-    <h2>Weather Forecasts</h2>
+export default ({ value }: { value?: Forecast[] }) => {
+  const [page, setPage] = useState(0);
 
-    <CardGroup>
-      {value?.map((v, i) =>
-        <Card key={i} {...v} />
-      )}
-    </CardGroup>
-  </Wrapper>
-);
+  return (
+    <Wrapper>
+      <h2>Weather Forecasts</h2>
+
+      <CardGroup>
+        {value?.slice(page * 10, page * 10 + 10).map((v, i) =>
+          <Card key={i} {...v} />
+        )}
+      </CardGroup>
+
+      <Pagination
+        maxItem={value?.length || 0}
+        pageSize={10}
+        page={[page, setPage]}
+      />
+    </Wrapper>
+  );
+}

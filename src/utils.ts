@@ -1,6 +1,11 @@
 import { AreaMetadata, Weather } from "api/weather/types";
 import { Location } from "types";
 
+export function applyStyleIf(predicate: boolean, css: string) {
+  if (predicate) return css;
+  return '';
+}
+
 export function getNearestArea(location: Location, areaMetadata: AreaMetadata[]) {
   if (!areaMetadata.length) return null;
 

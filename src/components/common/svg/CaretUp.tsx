@@ -9,7 +9,12 @@ export const Wrapper = styled.svg(({ $deg }: { $deg: number }) => `
   width: auto;
   display: block;
 
-  transform: rotateZ(${$deg}deg);
+  & path {
+    transform: rotateZ(${$deg}deg);
+    transform-origin: center;
+
+    transition: 0.25s fill;
+  }
 `);
 
 export default ({ color = "var(--secondary-color)", direction = "up", ...props }: {
