@@ -10,7 +10,10 @@ import Modal, { Wrapper as $Modal } from 'components/common/Modal';
 const Wrapper = styled.div`
   ${$Modal} { 
     width: 100%;
-    // max-width: 60vmin;
+  }
+
+  @media screen and (min-width: ${config.viewport.md}) {
+    ${$Modal} { max-width: 90vmin }
   }
 `;
 
