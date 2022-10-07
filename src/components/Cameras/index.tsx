@@ -9,19 +9,26 @@ const Wrapper = styled.div`
 
 `;
 
+const CardGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export default ({ value, onPreview, setMapCenter }: {
   value: Camera[],
   onPreview: (c: Camera) => void,
   setMapCenter: (latlng: LatLngExpression) => void
 }) => (
   <Wrapper>
-    {value.map((v, i) =>
-      <Card
-        key={i}
-        onImageIconClick={() => onPreview(v)}
-        onGlobeClick={() => setMapCenter([v.location.latitude, v.location.longitude])}
-        {...v}
-      />
-    )}
+    <CardGroup>
+      {value.map((v, i) =>
+        <Card
+          key={i}
+          onPreview={() => onPreview(v)}
+          onGlobeClick={() => setMapCenter([v.location.latitude, v.location.longitude])}
+          {...v}
+        />
+      )}
+    </CardGroup>
   </Wrapper>
 );

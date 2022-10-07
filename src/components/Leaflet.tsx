@@ -12,8 +12,16 @@ const defaultIcon = L.icon({
   iconAnchor: [12.5, 41]
 });
 
-export const Wrapper = styled(MapContainer)`
-  height: 600px;
+export const Wrapper = styled.div`
+  position: sticky;
+  top: 0;
+
+  height: 100vh;
+  width: 100%;
+`;
+
+const LeafletContainer = styled(MapContainer)`
+  height: 100%;
   width: 100%;
 
   & .leaflet-popup { bottom: 36px !important }
@@ -25,20 +33,22 @@ export default React.forwardRef(({ value, onMarkerClick }: {
 },
   ref: React.ForwardedRef<L.Map>
 ) => (
-  <Wrapper ref={ref} center={[1.3581487354888908, 103.8186384701943]} zoom={12}>
-    <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    {value.map((v, i) =>
-      <Marker
-        key={i}
-        position={[v.location.latitude, v.location.longitude]}
-        icon={defaultIcon}
-        eventHandlers={{
-          click: () => onMarkerClick(v)
-        }}
+  <Wrapper>
+    <LeafletContainer ref={ref} center={[1.3581487354888908, 103.8186384701943]} zoom={12}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-    )}
+      {value.map((v, i) =>
+        <Marker
+          key={i}
+          position={[v.location.latitude, v.location.longitude]}
+          icon={defaultIcon}
+          eventHandlers={{
+            click: () => onMarkerClick(v)
+          }}
+        />
+      )}
+    </LeafletContainer>
   </Wrapper>
 ));

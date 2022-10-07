@@ -13,15 +13,19 @@ import PreviewModal from 'components/PreviewModal';
 
 const Wrapper = styled.main`
   min-height: 100vh;
-  overflow-x: hidden;
   padding: 10px 20px;
-
   background: var(--neutral-color);
 `;
 
+const Traffic = styled.div`
+  margin-top: 40px;
+  & > h2 { margin-bottom: 15px }
+`;
+
 const Container = styled.div`
+  position: relative;
   display: flex;
-  
+  align-items: start;
 `;
 
 function App() {
@@ -39,7 +43,7 @@ function App() {
   }
 
   const setMapCenter = (latlng: LatLngExpression) => {
-    map.current?.setView(latlng, 15);
+    map.current?.setView(latlng, 14);
   }
 
   return (
@@ -52,20 +56,23 @@ function App() {
 
         <Weather value={forecast?.items[0]?.forecasts} />
 
-        <Container>
-          <Cameras
-            value={cameras}
-            onPreview={handlePreview}
-            setMapCenter={setMapCenter}
-          />
+        <Traffic>
+          <h2>Traffic Condition</h2>
 
-          <Leaflet
-            ref={map}
-            value={cameras}
-            onMarkerClick={handlePreview}
-          />
-        </Container>
+          <Container>
+            <Cameras
+              value={cameras}
+              onPreview={handlePreview}
+              setMapCenter={setMapCenter}
+            />
 
+            <Leaflet
+              ref={map}
+              value={cameras}
+              onMarkerClick={handlePreview}
+            />
+          </Container>
+        </Traffic>
       </Wrapper>
 
       <PreviewModal

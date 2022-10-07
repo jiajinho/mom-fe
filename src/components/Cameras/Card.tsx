@@ -7,6 +7,7 @@ import { mapWeatherToSVGPath } from 'utils';
 import Tooltip, { Tooltip as $Tooltip } from 'components/common/Tooltip';
 import Globe, { Wrapper as $Globe } from 'components/common/svg/Globe';
 import CaretUp, { Wrapper as $CaretUp } from 'components/common/svg/CaretUp';
+import useViewportStore from 'stores/useViewportStore';
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,8 +21,9 @@ const Wrapper = styled.div`
   box-shadow: 1px 1px 6px 1px #0001;
 
   ${$CaretUp} { 
-    height: 20px;
+    height: 16px;
     cursor: pointer;
+    flex-shrink: 0;
   }
 
   ${$Globe}:hover path,
@@ -44,8 +46,8 @@ const Content = styled.div`
   justify-content: center;
   gap: 2px;
 
-  & #forecast {
-    font-size: 10px;
+  & #subtitle {
+    font-size: 8px;
     color: #aaa;
   }
 `;
@@ -57,6 +59,7 @@ const Area = styled.div`
 
   p { 
     margin-right: 3px;
+    font-size: 12px;
     font-weight: 500 
   }
 
@@ -68,27 +71,37 @@ const Area = styled.div`
   }
 `;
 
-export default ({ onImageIconClick, onGlobeClick, ...props }: {
-  onImageIconClick: () => void,
+export default ({ onPreview, onGlobeClick, ...props }: {
+  onPreview: () => void,
   onGlobeClick: () => void
 } & Camera) => {
 
+  const md = useViewportStore(state => state.md);
   const tooltip = `${props.location.latitude}, ${props.location.longitude}`;
+
+  const handleCaretClick = () => {
+    md && onPreview();
+    onGlobeClick();
+  }
 
   return (
     <Wrapper>
-      <Icon src={mapWeatherToSVGPath(props.area.weather)} />
+      {md &&
+        <Icon src={mapWeatherToSVGPath(props.area.weather)} />
+      }
 
       <Content>
         <Area>
           <p>{props.area.name}</p>
 
-          <Tooltip text={tooltip}>
-            <Globe color="#bbb" onClick={onGlobeClick} />
-          </Tooltip>
+          {md &&
+            <Tooltip text={tooltip}>
+              <Globe color="#bbb" onClick={onGlobeClick} />
+            </Tooltip>
+          }
         </Area>
 
-        <p id="forecast">
+        <p id="subtitle">
           {props.area.weather}
         </p>
       </Content>
@@ -96,10 +109,7 @@ export default ({ onImageIconClick, onGlobeClick, ...props }: {
       <CaretUp
         color="#bbb"
         direction="right"
-        onClick={() => {
-          onImageIconClick();
-          onGlobeClick();
-        }}
+        onClick={handleCaretClick}
       />
     </Wrapper>
   );

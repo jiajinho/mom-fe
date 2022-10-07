@@ -10,7 +10,7 @@ import Modal, { Wrapper as $Modal } from 'components/common/Modal';
 const Wrapper = styled.div`
   ${$Modal} { 
     width: 100%;
-    max-width: 60vmin;
+    // max-width: 60vmin;
   }
 `;
 

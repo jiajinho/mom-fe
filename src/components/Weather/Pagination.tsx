@@ -5,7 +5,8 @@ import CaretUp, { Wrapper as $CaretUp } from 'components/common/svg/CaretUp';
 import Ellipse, { Wrapper as $Ellipse } from 'components/common/svg/Ellipse';
 
 const Wrapper = styled.div`
-  margin-top: 10px;
+  margin-top: 20px;
+  
   ${$CaretUp} { height: 20px }
 `;
 

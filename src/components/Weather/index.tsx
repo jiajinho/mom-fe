@@ -7,14 +7,16 @@ import Pagination from './Pagination';
 
 const Wrapper = styled.div`
   position: relative;
-  padding: 20px 25px;
+  padding: 20px 0;
 
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 `;
 
 const CardGroup = styled.div`
+  padding: 0 25px;
+
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
