@@ -24,8 +24,8 @@ export default ({ value, onPreview, setMapCenter }: {
       {value.map((v, i) =>
         <Card
           key={i}
-          onPreview={() => onPreview(v)}
-          onGlobeClick={() => setMapCenter([v.location.latitude, v.location.longitude])}
+          openPreviewModal={() => onPreview(v)}
+          setMapCenter={() => setMapCenter([v.location.latitude, v.location.longitude])}
           {...v}
         />
       )}

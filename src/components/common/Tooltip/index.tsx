@@ -38,14 +38,14 @@ export const Tooltip = styled.div`
   & > p { font-size: 10px }
 `;
 
-export default ({ text, children }: {
+export default ({ text, children, ...props }: {
   text: string,
   children: string | JSX.Element
-}) => {
+} & Omit<JSX.IntrinsicElements["div"], "ref">) => {
   const refs = useAnimation();
 
   return (
-    <Wrapper ref={refs.wrapper}>
+    <Wrapper ref={refs.wrapper} {...props}>
       <Tooltip ref={refs.tooltip}>
         <p>{text}</p>
       </Tooltip>

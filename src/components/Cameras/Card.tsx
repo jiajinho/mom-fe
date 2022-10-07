@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   border-radius: 8px;
 
   box-shadow: 1px 1px 6px 1px #0001;
+  cursor: pointer;
 
   ${$CaretUp} { 
     height: 16px;
@@ -27,10 +28,11 @@ const Wrapper = styled.div`
     flex-shrink: 0;
   }
 
-  ${$Globe}:hover path,
-  ${$CaretUp}:hover path { 
-    fill: var(--secondary-color);
-  }
+  ${$Globe}:hover path{ fill: var(--primary-color) }
+
+  &:hover p#area { color: var(--primary-color) }
+
+  &:hover ${$CaretUp} path { fill: var(--primary-color) }
 
   @media screen and (min-width: ${config.viewport.md}) {
     width: 250px;
@@ -69,7 +71,8 @@ const Area = styled.div`
   & > p { 
     margin-right: 3px;
     font-size: 12px;
-    font-weight: 500 
+    font-weight: 500;
+    transition: 0.15s color;
   }
 
   ${$Tooltip} { white-space: nowrap }
@@ -84,32 +87,32 @@ const Area = styled.div`
   }
 `;
 
-export default ({ onPreview, onGlobeClick, ...props }: {
-  onPreview: () => void,
-  onGlobeClick: () => void
+export default ({ openPreviewModal, setMapCenter, ...props }: {
+  openPreviewModal: () => void,
+  setMapCenter: () => void
 } & Camera) => {
 
   const md = useViewportStore(state => state.md);
   const tooltip = `${props.location.latitude}, ${props.location.longitude}`;
 
-  const handleCaretClick = () => {
-    md && onPreview();
-    onGlobeClick();
+  const handleClick = () => {
+    md && openPreviewModal();
+    setMapCenter();
   }
 
   return (
-    <Wrapper>
+    <Wrapper onClick={handleClick}>
       {md &&
         <Icon src={mapWeatherToSVGPath(props.area.weather)} />
       }
 
       <Content>
         <Area>
-          <p>{props.area.name}</p>
+          <p id="area">{props.area.name}</p>
 
           {md &&
-            <Tooltip text={tooltip}>
-              <Globe color="#bbb" onClick={onGlobeClick} />
+            <Tooltip text={tooltip} onClick={e => e.stopPropagation()}>
+              <Globe color="#bbb" onClick={setMapCenter} />
             </Tooltip>
           }
         </Area>
@@ -122,7 +125,6 @@ export default ({ onPreview, onGlobeClick, ...props }: {
       <CaretUp
         color="#bbb"
         direction="right"
-        onClick={handleCaretClick}
       />
     </Wrapper>
   );
