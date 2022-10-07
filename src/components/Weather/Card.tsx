@@ -33,6 +33,10 @@ const Weather = styled.p`
 `;
 
 const Area = styled.p`
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+
   font-weight: 500;
   text-align: center;
   font-size: 12px;
