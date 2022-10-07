@@ -6,6 +6,7 @@ export function applyStyleIf(predicate: boolean, css: string) {
   return '';
 }
 
+//https://cdn-images-1.medium.com/max/800/1*ZrwEraj9S-u_KOWdKWc8sQ.png
 export function getNearestArea(location: Location, areaMetadata: AreaMetadata[]) {
   if (!areaMetadata.length) return null;
 
