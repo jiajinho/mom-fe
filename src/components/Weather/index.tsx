@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
+import locale from 'locale';
 import config from 'config';
 import { Forecast } from 'api/weather/types';
 
@@ -49,7 +50,7 @@ export default ({ value }: { value?: Forecast[] }) => {
 
   return (
     <Wrapper>
-      {!lg && <h2>Weather Forecast</h2>}
+      {!lg && <h2>{locale.en.weather.title}</h2>}
 
       <CardGroup>
         {filteredValue?.map((v, i) =>

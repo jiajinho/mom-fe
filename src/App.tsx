@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 
+import locale from 'locale';
 import config from 'config';
 import type { LatLngExpression } from 'leaflet';
 import type { Camera } from 'types';
@@ -78,7 +79,7 @@ function App() {
 
         <Content>
           <Section id="traffic">
-            <h2>Traffic Cameras</h2>
+            <h2>{locale.en.traffic.title}</h2>
 
             <Container>
               <Cameras
@@ -97,7 +98,7 @@ function App() {
 
           {lg &&
             <Section>
-              <h2>Weather Forecast</h2>
+              <h2>{locale.en.weather.title}</h2>
               <Weather value={forecast?.items[0]?.forecasts} />
             </Section>
           }

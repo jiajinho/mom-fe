@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { format } from 'date-fns';
 
+import locale from 'locale';
 import config from 'config';
 import type { Camera } from 'types';
 
@@ -74,13 +75,13 @@ export default ({ visible, camera }: {
           />
 
           <Footer>
-            <p>Camera ID</p>
+            <p>{locale.en.previewModal.id}</p>
             <p>{camera?.id}</p>
 
-            <p>Lat/long</p>
+            <p>{locale.en.previewModal.latlng}</p>
             <p>{camera?.location.latitude}, {camera?.location.longitude}</p>
 
-            <p>Last updated</p>
+            <p>{locale.en.previewModal.lastUpdated}</p>
             <p>{lastUpdated}</p>
           </Footer>
         </Container>

@@ -63,6 +63,8 @@ export default ({ onChange, ...props }: {
   onChange: (d: Date) => void
 } & Omit<ReactDatePickerProps, "onChange">
 ) => {
+  const placeholder = "yyyy/MM/dd   h:mm aa";
+
   const handleChange = (d: any) => {
     if (d instanceof Date) {
       onChange(d);
@@ -73,8 +75,8 @@ export default ({ onChange, ...props }: {
     <Wrapper>
       <Picker
         {...props}
-        placeholderText="yyyy/MM/dd   h:mm aa"
-        dateFormat="yyyy/MM/dd   h:mm aa"
+        placeholderText={placeholder}
+        dateFormat={placeholder}
         onChange={handleChange}
         showTimeSelect
       />
