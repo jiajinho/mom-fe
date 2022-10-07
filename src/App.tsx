@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 
+import config from 'config';
 import type { LatLngExpression } from 'leaflet';
 import type { Camera } from 'types';
 import useFetchApi from 'hooks/useFetchApi';
+import useViewportStore from 'stores/useViewportStore';
 
 import DatePicker from 'components/common/DatePicker';
 import Weather from 'components/Weather';
@@ -15,11 +17,26 @@ const Wrapper = styled.main`
   min-height: 100vh;
   padding: 10px 20px;
   background: var(--neutral-color);
+
+  @media screen and (min-width: ${config.viewport.md}) {
+    padding: 10px 40px;
+  }
 `;
 
-const Traffic = styled.div`
+const Content = styled.div`
+  display: flex;
+  gap: 30px;
+`;
+
+const Section = styled.div`
   margin-top: 40px;
+
+  &#traffic { flex-grow: 1 }
   & > h2 { margin-bottom: 15px }
+
+  @media screen and (min-width: ${config.viewport.lg}) {
+    margin-top: 20px;
+  }
 `;
 
 const Container = styled.div`
@@ -28,7 +45,10 @@ const Container = styled.div`
   align-items: start;
 `;
 
+
 function App() {
+  const lg = useViewportStore(state => state.lg);
+
   const map = useRef<L.Map>(null);
 
   const [date, setDate] = useState<Date>(new Date());
@@ -54,25 +74,35 @@ function App() {
           onChange={setDate}
         />
 
-        <Weather value={forecast?.items[0]?.forecasts} />
+        {!lg && <Weather value={forecast?.items[0]?.forecasts} />}
 
-        <Traffic>
-          <h2>Traffic Condition</h2>
+        <Content>
+          <Section id="traffic">
+            <h2>Traffic Cameras</h2>
 
-          <Container>
-            <Cameras
-              value={cameras}
-              onPreview={handlePreview}
-              setMapCenter={setMapCenter}
-            />
+            <Container>
+              <Cameras
+                value={cameras}
+                onPreview={handlePreview}
+                setMapCenter={setMapCenter}
+              />
 
-            <Leaflet
-              ref={map}
-              value={cameras}
-              onMarkerClick={handlePreview}
-            />
-          </Container>
-        </Traffic>
+              <Leaflet
+                ref={map}
+                value={cameras}
+                onMarkerClick={handlePreview}
+              />
+            </Container>
+          </Section>
+
+          {lg &&
+            <Section>
+              <h2>Weather Forecast</h2>
+              <Weather value={forecast?.items[0]?.forecasts} />
+            </Section>
+          }
+        </Content>
+
       </Wrapper>
 
       <PreviewModal

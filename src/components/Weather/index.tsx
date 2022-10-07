@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 
+import config from 'config';
 import { Forecast } from 'api/weather/types';
+
 import Card from './Card';
 import Pagination from './Pagination';
 import useViewportStore from 'stores/useViewportStore';
@@ -13,6 +15,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
+
+  @media screen and (min-width: ${config.viewport.lg}) {
+    padding: 0;
+  }
 `;
 
 const CardGroup = styled.div`
@@ -22,35 +28,42 @@ const CardGroup = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+
+  @media screen and (min-width: ${config.viewport.md}) {
+    padding: 0 35px;
+  }
+
+  @media screen and (min-width: ${config.viewport.lg}) {
+    padding: 0;
+    width: 210px;
+  }
 `;
 
 export default ({ value }: { value?: Forecast[] }) => {
+  const lg = useViewportStore(state => state.lg);
+
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-
-  //   }
-
-
-  // }, []);
+  const filteredValue = lg ? value : value?.slice(page * pageSize, page * pageSize + pageSize);
 
   return (
     <Wrapper>
-      <h2>Weather Forecasts</h2>
+      {!lg && <h2>Weather Forecast</h2>}
 
       <CardGroup>
-        {value?.slice(page * pageSize, page * pageSize + pageSize).map((v, i) =>
+        {filteredValue?.map((v, i) =>
           <Card key={i} {...v} />
         )}
       </CardGroup>
 
-      <Pagination
-        maxItem={value?.length || 0}
-        pageSize={pageSize}
-        page={[page, setPage]}
-      />
+      {!lg &&
+        <Pagination
+          maxItem={value?.length || 0}
+          pageSize={pageSize}
+          page={[page, setPage]}
+        />
+      }
     </Wrapper>
   );
 }
