@@ -1,5 +1,12 @@
 import type { Weather } from 'api/weather/types';
 
+export type Viewport = {
+  sm: string,
+  md: string,
+  lg: string,
+  xl: string
+};
+
 export type Location = {
   latitude: number,
   longitude: number
