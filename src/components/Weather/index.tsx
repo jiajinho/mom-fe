@@ -41,10 +41,12 @@ const CardGroup = styled.div`
 `;
 
 export default ({ value }: { value?: Forecast[] }) => {
+  const md = useViewportStore(state => state.md);
   const lg = useViewportStore(state => state.lg);
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+
+  const pageSize = 10;
 
   const filteredValue = lg ? value : value?.slice(page * pageSize, page * pageSize + pageSize);
 
