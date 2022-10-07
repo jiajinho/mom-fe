@@ -15,9 +15,11 @@ import Leaflet from 'components/Leaflet';
 import PreviewModal from 'components/PreviewModal';
 
 const Wrapper = styled.main`
+  position: relative;
   min-height: 100vh;
   padding: 10px 20px;
   background: var(--neutral-color);
+  padding-bottom: 50px !important;
 
   @media screen and (min-width: ${config.viewport.md}) {
     padding: 10px 40px;
@@ -44,6 +46,13 @@ const Container = styled.div`
   position: relative;
   display: flex;
   align-items: start;
+`;
+
+const Footnote = styled.a`
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 12px;
 `;
 
 
@@ -103,6 +112,10 @@ function App() {
             </Section>
           }
         </Content>
+
+        <Footnote href="https://github.com/jiajinho/mom-fe">
+          [Gthub Repo]
+        </Footnote>
 
       </Wrapper>
 
