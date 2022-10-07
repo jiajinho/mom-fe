@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/macro';
 
 import { Forecast } from 'api/weather/types';
 import Card from './Card';
 import Pagination from './Pagination';
+import useViewportStore from 'stores/useViewportStore';
 
 const Wrapper = styled.div`
   position: relative;
@@ -25,20 +26,29 @@ const CardGroup = styled.div`
 
 export default ({ value }: { value?: Forecast[] }) => {
   const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
+  // useEffect(() => {
+  //   const handleResize = () => {
+
+  //   }
+
+
+  // }, []);
 
   return (
     <Wrapper>
       <h2>Weather Forecasts</h2>
 
       <CardGroup>
-        {value?.slice(page * 10, page * 10 + 10).map((v, i) =>
+        {value?.slice(page * pageSize, page * pageSize + pageSize).map((v, i) =>
           <Card key={i} {...v} />
         )}
       </CardGroup>
 
       <Pagination
         maxItem={value?.length || 0}
-        pageSize={10}
+        pageSize={pageSize}
         page={[page, setPage]}
       />
     </Wrapper>
