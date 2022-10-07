@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
-import { Camera } from 'types';
+import config from 'config';
+import type { Camera } from 'types';
 import { mapWeatherToSVGPath } from 'utils';
+import useViewportStore from 'stores/useViewportStore';
 
 import Tooltip, { Tooltip as $Tooltip } from 'components/common/Tooltip';
 import Globe, { Wrapper as $Globe } from 'components/common/svg/Globe';
 import CaretUp, { Wrapper as $CaretUp } from 'components/common/svg/CaretUp';
-import useViewportStore from 'stores/useViewportStore';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,6 +31,10 @@ const Wrapper = styled.div`
   ${$CaretUp}:hover path { 
     fill: var(--secondary-color);
   }
+
+  @media screen and (min-width: ${config.viewport.md}) {
+    width: 250px;
+  }
 `;
 
 const Icon = styled.img`
@@ -45,10 +50,14 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 2px;
+`;
 
-  & #subtitle {
-    font-size: 8px;
-    color: #aaa;
+const Weather = styled.p`
+  font-size: 7px;
+  color: #aaa;
+
+  @media screen and (min-width: ${config.viewport.md}) {
+    font-size: 10px;
   }
 `;
 
@@ -57,7 +66,7 @@ const Area = styled.div`
   align-items: center;
   gap: 5px;
 
-  p { 
+  & > p { 
     margin-right: 3px;
     font-size: 12px;
     font-weight: 500 
@@ -68,6 +77,10 @@ const Area = styled.div`
   ${$Globe} { 
     height: 16px;
     cursor: pointer; 
+  }
+
+  @media screen and (min-width: ${config.viewport.md}) {
+    & > p { font-size: 14px }
   }
 `;
 
@@ -101,9 +114,9 @@ export default ({ onPreview, onGlobeClick, ...props }: {
           }
         </Area>
 
-        <p id="subtitle">
+        <Weather>
           {props.area.weather}
-        </p>
+        </Weather>
       </Content>
 
       <CaretUp
