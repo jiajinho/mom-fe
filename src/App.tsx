@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components/macro';
 
 import locale from 'locale';
@@ -58,13 +58,17 @@ function App() {
   const [visible, setVisible] = useState(false);
   const [camera, setCamera] = useState<Camera>();
 
+  useEffect(() => {
+    setTimeout(() => { map.current?.invalidateSize() }, 400);
+  }, []);
+
   const handlePreview = (c: Camera) => {
     setCamera(c);
     setVisible(true);
   }
 
   const setMapCenter = (latlng: LatLngExpression) => {
-    map.current?.setView(latlng, 14);
+    map.current?.setView(latlng, 15);
   }
 
   return (
