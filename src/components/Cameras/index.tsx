@@ -31,21 +31,19 @@ export default ({ value, onPreview, setMapCenter }: {
   setMapCenter: (latlng: LatLngExpression) => void
 }) => (
   <Wrapper>
-    <CardGroup>
-      {value.map((v, i) =>
-        <Card
-          key={i}
-          openPreviewModal={() => onPreview(v)}
-          setMapCenter={() => setMapCenter([v.location.latitude, v.location.longitude])}
-          {...v}
-        />
-      )}
+    {value.sort((a, b) => a > b ? -1 : 1).map((v, i) =>
+      <Card
+        key={i}
+        openPreviewModal={() => onPreview(v)}
+        setMapCenter={() => setMapCenter([v.location.latitude, v.location.longitude])}
+        {...v}
+      />
+    )}
 
-      {!value.length &&
-        <EmptyMessage>
-          {locale.en.traffic.empty}
-        </EmptyMessage>
-      }
-    </CardGroup>
+    {!value.length &&
+      <EmptyMessage>
+        {locale.en.traffic.empty}
+      </EmptyMessage>
+    }
   </Wrapper>
 );

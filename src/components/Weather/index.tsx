@@ -45,6 +45,7 @@ const EmptyMessage = styled.p`
 `;
 
 export default ({ value }: { value?: Forecast[] }) => {
+  const md = useViewportStore(state => state.md);
   const lg = useViewportStore(state => state.lg);
 
   const [page, setPage] = useState(0);

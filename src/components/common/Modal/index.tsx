@@ -16,7 +16,7 @@ export const Mask = styled.div`
   align-items: center;
   justify-content: center;
 
-  background: #0007;
+  background: #000a;
   opacity: 0;
 `;
 
