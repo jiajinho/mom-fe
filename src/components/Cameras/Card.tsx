@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   background: white;
   padding: 5px 10px;
   border-radius: 8px;
+  width: 100%;
 
   box-shadow: 1px 1px 6px 1px #0001;
   cursor: pointer;
@@ -33,10 +34,6 @@ const Wrapper = styled.div`
   &:hover p#area { color: var(--primary-color) }
 
   &:hover ${$CaretUp} path { fill: var(--primary-color) }
-
-  @media screen and (min-width: ${config.viewport.md}) {
-    width: 250px;
-  }
 `;
 
 const Icon = styled.img`

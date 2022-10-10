@@ -26,10 +26,11 @@ export default (date: Date) => {
 
       setForecast(forecastResponse);
 
+
       //Aggregate traffic and forecast information
       const cameras: Camera[] = [];
 
-      trafficResponse.items[0]?.cameras.forEach(c => {
+      trafficResponse.items[0]?.cameras?.forEach(c => {
         const area = getNearestArea(c.location, forecastResponse.area_metadata);
 
         const areaName = area?.name || "N/A";
@@ -46,9 +47,9 @@ export default (date: Date) => {
             weather: forecastArea?.forecast || "N/A",
           }
         });
-
-        setCameras(cameras);
       });
+
+      setCameras(cameras);
     })();
   }, [date]);
 

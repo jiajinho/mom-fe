@@ -16,5 +16,6 @@ const viewport: Viewport = {
 
 export default {
   format,
-  viewport
+  viewport,
+  weatherPageSize: 10
 }

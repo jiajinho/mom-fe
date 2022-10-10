@@ -13,6 +13,7 @@ const defaultIcon = L.icon({
 });
 
 export const Wrapper = styled.div`
+  flex-grow: 1;
   position: sticky;
   top: 0;
 

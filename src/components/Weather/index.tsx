@@ -40,13 +40,19 @@ const CardGroup = styled.div`
   }
 `;
 
+const EmptyMessage = styled.p`
+  color: #bbb;
+`;
+
 export default ({ value }: { value?: Forecast[] }) => {
   const lg = useViewportStore(state => state.lg);
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
 
-  const filteredValue = lg ? value : value?.slice(page * pageSize, page * pageSize + pageSize);
+  const startIndex = page * config.weatherPageSize;
+  const endIndex = startIndex + config.weatherPageSize;
+
+  const filteredValue = lg ? value : value?.slice(startIndex, endIndex);
 
   return (
     <Wrapper>
@@ -56,12 +62,18 @@ export default ({ value }: { value?: Forecast[] }) => {
         {filteredValue?.map((v, i) =>
           <Card key={i} {...v} />
         )}
+
+        {!filteredValue &&
+          <EmptyMessage>
+            {locale.en.weather.empty}
+          </EmptyMessage>
+        }
       </CardGroup>
 
       {!lg &&
         <Pagination
           maxItem={value?.length || 0}
-          pageSize={pageSize}
+          pageSize={config.weatherPageSize}
           page={[page, setPage]}
         />
       }
